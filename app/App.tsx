@@ -4,16 +4,18 @@
  *
  * @format
  */
-import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
-import {Header} from 'react-native/Libraries/NewAppScreen';
+import {NavigationContainer} from '@react-navigation/native';
 
-function App(): JSX.Element {
+import React from 'react';
+import MainStackNavigation from './navigation/MainStackNavigation';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+
+export default function App() {
   return (
-    <SafeAreaView>
-      <Text>Test</Text>
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <MainStackNavigation />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
-
-export default App;
