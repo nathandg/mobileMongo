@@ -1,9 +1,18 @@
 import React, {Component} from 'react';
 import {Text} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
-class Home extends Component {
+type HomeProps = {
+  navigation: any;
+};
+
+class Home extends Component<HomeProps> {
   render() {
-    return <Text>Home</Text>;
+    return (
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('Info')}>
+        <Text>Home</Text>
+      </TouchableOpacity>
+    );
   }
 }
 
