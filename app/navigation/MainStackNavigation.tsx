@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../screens/Home/';
 import React from 'react';
 import Info from '../screens/Info';
+import NewDataBase from '../screens/NewDataBase';
 
 type RootStackParamList = {
   Home: undefined;
@@ -22,6 +23,11 @@ const MainStackNavigation = (): JSX.Element => {
       <Stack.Screen
         name="Info"
         component={Info}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="NewDataBase"
+        component={NewDataBase}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

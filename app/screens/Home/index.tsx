@@ -49,7 +49,7 @@ class Home extends Component<HomeProps> {
 
         <Pressable
           style={styles.button}
-          onPress={() => this.props.navigation.navigate('Info')}>
+          onPress={() => this.props.navigation.navigate('NewDataBase')}>
           <Text style={styles.buttonText}>Conectar DB</Text>
         </Pressable>
       </View>
