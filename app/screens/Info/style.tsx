@@ -8,9 +8,11 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
     height: '100%',
     paddingHorizontal: 30,
+    paddingVertical: 30,
   },
   icon: {
-    width: 90,
+    height: 100,
+    width: 100,
   },
   infos: {
     display: 'flex',
@@ -18,16 +20,17 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontFamily: 'Economica',
+    fontFamily: 'Poppins-Black',
     fontStyle: 'normal',
     fontWeight: '400',
     fontSize: 30,
   },
   text: {
-    fontStyle: 'italic',
+    fontFamily: 'Poppins-Regular',
     fontWeight: '400',
     fontSize: 20,
-    lineHeight: 26,
+    lineHeight: 25,
+    textAlign: 'center',
   },
   lottie: {
     height: 320,
@@ -42,8 +45,7 @@ export default StyleSheet.create({
     borderRadius: 20,
   },
   buttonText: {
-    fontFamily: 'Economica',
-    fontStyle: 'normal',
+    fontFamily: 'Poppins-Italic',
     fontWeight: '400',
     fontSize: 20,
     color: '#fff',

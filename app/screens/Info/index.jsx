@@ -7,12 +7,7 @@ class Info extends React.Component {
   render() {
     return (
       <View style={styles.page}>
-        <LottieView 
-          source={require('/home/nathan/repostorios/mobileMongo/assets/Lottie/mongo_animation.json')}
-          autoPlay
-          loop
-          style={styles.icon}
-        />
+        <Image style={styles.icon} source={require('../../../assets/Images/Logo.png')} />
         <LottieView
           source={require('/home/nathan/repostorios/mobileMongo/assets/Lottie/Info_Lottie.json')}
           autoPlay

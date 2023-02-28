@@ -9,14 +9,12 @@ class SavedConnectionCard extends Component {
       <View style={styles.container}>
         <AnimatedLottieView
           source={require('../../../assets/Lottie/mongo_animation.json')}
-          autoPlay
           loop
           style={styles.icon}
         />
         <Text>{this.props.title}</Text>
         <AnimatedLottieView
           source={require('../../../assets/Lottie/love.json')}
-          autoPlay
           loop
           style={styles.iconFav}
         />
