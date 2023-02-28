@@ -9,6 +9,9 @@ export default StyleSheet.create({
     height: '100%',
     paddingHorizontal: 30,
   },
+  icon: {
+    width: 90,
+  },
   infos: {
     display: 'flex',
     flexDirection: 'column',
