@@ -30,9 +30,6 @@ export default StyleSheet.create({
     width: '100%',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    // justifyContent: 'flex-start',
-    // alignItems: 'flex-start',
-    // backgroundColor: '#f0ff',
   },
   FieldLabel: {
     fontFamily: 'Poppins-SemiBold',

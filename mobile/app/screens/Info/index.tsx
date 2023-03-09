@@ -1,13 +1,17 @@
-import React from 'react';
-import {Button, Image, Pressable, Text, View} from 'react-native';
-import styles from './style';
 import LottieView from 'lottie-react-native';
+import React from 'react';
+import {Image, Pressable, Text, View} from 'react-native';
+
+import styles from './style';
 
 class Info extends React.Component {
   render() {
     return (
       <View style={styles.page}>
-        <Image style={styles.icon} source={require('../../../assets/Images/Logo.png')} />
+        <Image
+          style={styles.icon}
+          source={require('../../../assets/Images/Logo.png')}
+        />
         <LottieView
           source={require('../../../assets/Lottie/Info_Lottie.json')}
           autoPlay
