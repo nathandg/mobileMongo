@@ -1,11 +1,13 @@
 import {StyleSheet} from 'react-native';
+import {Dimensions} from 'react-native';
 
 export default StyleSheet.create({
   form: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    height: Dimensions.get('window').height - 100,
   },
   input: {
     width: '100%',
@@ -40,6 +42,10 @@ export default StyleSheet.create({
     paddingStart: 10,
   },
   lottie: {
-    width: '70%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    maxWidth: '90%',
+    height: 250,
+    maxHeight: Dimensions.get('window').height / 3,
   },
 });

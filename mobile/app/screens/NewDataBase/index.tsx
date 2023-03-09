@@ -57,13 +57,22 @@ class NewDataBase extends Component<Props> {
     }
   };
 
+  state = {
+    loading: false,
+  };
+
+  handleLoading = () => {
+    this.setState({loading: !this.state.loading});
+    console.log(this.state.loading);
+  };
+
   render() {
     return (
       <View>
         <HeaderComponent
           title="New Database"
           subtitle="Cloud Prod - Atlas"
-          favorite={true}
+          favorite={false}
           navigation={this.props.navigation}
         />
 
@@ -149,15 +158,19 @@ class NewDataBase extends Component<Props> {
                 )}
               </View>
 
-              {/* <Button onPress={handleSubmit} title="Submit" /> */}
-              <LottieView
-                source={require('../../../assets/Lottie/Server2.json')}
-                autoPlay
-                duration={10000}
-                style={styles.lottie}
-              />
+              {this.state.loading && (
+                <LottieView
+                  source={require('../../../assets/Lottie/Server2.json')}
+                  autoPlay
+                  duration={12000}
+                  style={styles.lottie}
+                />
+              )}
 
-              <MyButton title="Save" onPress={handleSubmit} />
+              <MyButton
+                title={this.state.loading ? 'Conectando' : 'Conectar DB'}
+                onPress={this.handleLoading}
+              />
             </View>
           )}
         </Formik>

@@ -16,6 +16,7 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: iconSize,
   },
   title: {
     color: '#000',
@@ -29,7 +30,6 @@ export default StyleSheet.create({
     marginTop: 1,
   },
   iconContainer: {
-    // paddingHorizontal: 10,
     width: iconSize,
     height: iconSize,
     alignItems: 'center',
@@ -43,7 +43,7 @@ export default StyleSheet.create({
   },
   favContainer: {
     position: 'absolute',
-    right: '5%',
+    right: 0,
     top: headerHeight / 2 - favIconSize / 2,
     width: favIconSize,
     height: favIconSize,

@@ -7,6 +7,7 @@ import styles from './style';
 class HeaderComponent extends Component<Props> {
   state = {
     animation: null,
+    favorite: this.props.favorite,
   };
 
   handleAnimation = () => {
@@ -18,12 +19,12 @@ class HeaderComponent extends Component<Props> {
   };
 
   toggleFavorite = () => {
-    // this.props.favorite = !this.props.favorite;
-    console.log('Favorite is', this.props.favorite);
+    this.setState({favorite: !this.state.favorite});
+    console.log('Favorite is', this.state.favorite);
   };
 
   render() {
-    const {title, subtitle, navigation, favorite} = this.props;
+    const {title, subtitle, navigation} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.iconContainer}>
@@ -36,22 +37,23 @@ class HeaderComponent extends Component<Props> {
             />
           </TouchableOpacity>
         </View>
+
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{title}</Text>
           {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
         </View>
-        {!favorite && (
-          <View style={styles.favContainer}>
-            <TouchableOpacity onPress={this.toggleFavorite}>
+
+        <View style={styles.favContainer}>
+          <TouchableOpacity onPress={this.toggleFavorite}>
+            {!this.state.favorite && (
               <LottieView
                 source={require('../../../assets/Lottie/favAction.json')}
                 autoPlay
-                loop
                 style={styles.favIcon}
               />
-            </TouchableOpacity>
-          </View>
-        )}
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
