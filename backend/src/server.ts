@@ -1,5 +1,11 @@
 import app from "./app";
+import { environment } from "./app";
+import connectDB from "./db";
 
-const PORT: Number = 5050;
+const PORT = environment.PORT || 4000;
 
-app.listen(PORT, (): void => console.log(`running on port ${PORT}`));
+connectDB(false).then(() => {
+  app.listen(PORT, (): void => console.log(`running on port ${PORT}`));
+})
+  .catch((error: any) => console.error(error)
+  );
