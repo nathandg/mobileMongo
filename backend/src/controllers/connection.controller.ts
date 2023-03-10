@@ -1,11 +1,13 @@
 import Connection from "../models/connection.model";
-import ConnectionModel from "../models/connection.schema";
+import { TypeConnectionModel } from "../models/connection.schema";
 
 class ConnectionController {
   private connections: Connection[] = [];
 
+  constructor(private connectionModel: TypeConnectionModel) {}
+
   public async addConnection(connection: Connection): Promise<Connection> {
-    const newConnection = new ConnectionModel(connection);
+    const newConnection = new this.connectionModel(connection);
     try {
       await newConnection.save();
     } catch (error) {

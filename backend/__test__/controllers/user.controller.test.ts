@@ -12,24 +12,22 @@ describe("User Controller", () => {
     const user: User = {
       name: "John Doe",
       password: "myPassword",
-    }
+    };
 
     const result = await userController.addUser(user);
     expect(result).toEqual(user);
   });
 
-
   it("should return all users", async () => {
-
     const user: User = {
       name: "John Doe",
       password: "myPassword",
-    }
+    };
 
     const user2: User = {
       name: "Jane Doe2",
       password: "myPassword",
-    }
+    };
 
     await userController.addUser(user);
     await userController.addUser(user2);
