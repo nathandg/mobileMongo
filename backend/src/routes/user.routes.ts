@@ -1,5 +1,5 @@
-import { Request, Response, Router } from 'express';
-import UserController from '../controllers/user.controller';
+import { Request, Response, Router } from "express";
+import UserController from "../controllers/user.controller";
 
 const router = Router();
 const userController = new UserController();
@@ -14,7 +14,5 @@ router.get("/", (req: Request, res: Response) => {
   const users = userController.getUsers();
   res.status(200).send(users);
 });
-
-
 
 export { router };

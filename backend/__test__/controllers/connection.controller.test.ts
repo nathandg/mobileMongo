@@ -1,18 +1,22 @@
 import ConnectionController from "../../src/controllers/connection.controller";
-import Connection from "../../src/models/connection.model";
+import { IConnection} from "../../src/models/connection.model";
+import { TypeConnectionModel } from "../../src/models/connection.schema";
 
 describe("Connection Controller", () => {
   let connectionController: ConnectionController;
-  let connection: Connection;
-  let mockConnectionModel: any;
+  let connection: IConnection;
+
+  class MockConnectionModel {
+    public async save() {
+      console.log("Mock save");
+      return connection;
+    }
+  }
 
   beforeEach(() => {
-    mockConnectionModel = jest.fn().mockImplementation((data) => ({
-      ...data,
-      save: jest.fn().mockResolvedValue(data),
-    }));
-
-    connectionController = new ConnectionController(mockConnectionModel);
+    connectionController = new ConnectionController(
+      MockConnectionModel as TypeConnectionModel
+    );
 
     connection = {
       name: "Test Connection",
@@ -22,10 +26,31 @@ describe("Connection Controller", () => {
     };
   });
 
-  test("should add a connection", async () => {
-    
+  it("should add a connection", async () => {
     const saveConnection = await connectionController.addConnection(connection);
     expect(saveConnection).toEqual(connection);
-
   });
+
+  it("should add a blank name", () => {
+    connection.name = "";
+    expect(
+      connectionController.addConnection(connection)
+    ).rejects.toThrowError();
+  });
+
+  it("should add a blank mongoUri", () => {
+    connection.mongoUri = "";
+    expect(
+      connectionController.addConnection(connection)
+    ).rejects.toThrowError();
+  });
+
+  it("should add a blank userId", () => {
+    connection.userId = "";
+    expect(
+      connectionController.addConnection(connection)
+    ).rejects.toThrowError();
+  });
+
+  
 });
