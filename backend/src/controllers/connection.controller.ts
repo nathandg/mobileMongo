@@ -43,7 +43,7 @@ class ConnectionController {
     return connections;
   }
 
-  public async getConnectionInfos(
+  public async getConnectionInfo(
     mongoUri: string
   ): Promise<Array<IConnectionInfo>> {
     console.log(mongoUri);
@@ -78,6 +78,27 @@ class ConnectionController {
     return [];
   }
 
+  public async listDocumentsFromCollection(
+    mongoUri: string,
+    dataBase: string,
+    collection: string
+  ): Promise<Array<object>> {
+    try {
+      const mongoClient = await (
+        await MongoClient.connect(mongoUri)
+      ).db(dataBase);
+      const documents = await mongoClient
+        .collection(collection)
+        .find()
+        .toArray();
+
+      return documents;
+    } catch (error) {
+      new Error(`List documents error: ${error}`);
+    }
+
+    return [];
+  }
 }
 
 export default ConnectionController;

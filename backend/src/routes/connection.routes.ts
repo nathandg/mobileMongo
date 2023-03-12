@@ -1,4 +1,5 @@
 import { Request, Response, Router } from "express";
+
 import ConnectionController from "../controllers/connection.controller";
 import connectionSchema from "../models/connection.schema";
 
@@ -16,21 +17,21 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.get("/infos", async (req: Request, res: Response) => {
-  const connectionInfos = await connectionController.getConnectionInfos(
+  const connectionInfos = await connectionController.getConnectionInfo(
     req.body.mongoUri
   );
   res.status(200).send(connectionInfos);
 });
 
-// router.get("/documents", async (req: Request, res: Response) => {
-//   const { mongoUri, database, collection } = req.body;
-//   const documents = await connectionController.getDocuments(
-//     mongoUri,
-//     database,
-//     collection
-//   );
+router.get("/documents", async (req: Request, res: Response) => {
+  const { mongoUri, database, collection } = req.body;
+  const documents = await connectionController.listDocumentsFromCollection(
+    mongoUri,
+    database,
+    collection
+  );
 
-//   res.status(200).send(documents);
-// });
+  res.status(200).send(documents);
+});
 
 export { router };
