@@ -8,27 +8,68 @@ import { collectionsFormatFromDb } from "../utils/formatReponseDb";
 class ConnectionController {
   constructor(private connectionModel: TypeConnectionModel) {}
 
-  private connectionRequestSchema = yup.object().shape({
+  private addConnectionRequest = yup.object().shape({
     name: yup.string().required(),
-    mongoUri: yup.string().required(),
+    mongoUri: yup
+      .string()
+      .matches(
+        /^mongodb\+srv:\/\/|^mongodb:\/\//,
+        'Invalid mongo uri, must start with "mongodb+srv://" or "mongodb://'
+      )
+      .required(),
     isFavorite: yup.boolean(),
     userId: yup.string().required(),
   });
 
+  private listDocumentsRequest = yup.object().shape({
+    mongoUri: yup
+      .string()
+      .matches(
+        /^mongodb\+srv:\/\/|^mongodb:\/\//,
+        'Invalid mongo uri, must start with "mongodb+srv://" or "mongodb://'
+      )
+      .required(),
+    dataBase: yup.string().required(),
+    collection: yup.string().required(),
+  });
+
   public async addConnection(connection: IConnection): Promise<IConnection> {
     try {
-      await this.connectionRequestSchema.validate(connection);
+      await this.addConnectionRequest.validate(connection);
     } catch (error) {
-      throw new Error(`Connection validation error: ${error}`);
+      if (error instanceof yup.ValidationError) {
+        console.log(`addConnection yup error: ${error.message}`);
+        throw {
+          status: 422,
+          message: error.message,
+        };
+      }
+    }
+
+    const connectionExists = await this.connectionModel.findOne({
+      $or: [{ name: connection.name }, { mongoUri: connection.mongoUri }],
+    });
+
+    if (connectionExists) {
+      console.log("addConnection already exists error");
+      throw {
+        status: 409,
+        message: "Connection already exists",
+      };
     }
 
     const newConnection = new this.connectionModel(connection);
-    newConnection
-      .save()
-      .then((connection) => console.log(`Connection saved: ${connection}`))
-      .catch((error) => console.log(`Connection save error: ${error}`));
+    try {
+      await newConnection.save();
+    } catch (error: any) {
+      console.log(`addConnection save error: ${error.message}`);
+      throw {
+        status: 500,
+        message: "Internal server error",
+      };
+    }
 
-    return connection;
+    return newConnection;
   }
 
   public async getConnections(): Promise<IConnection[]> {
@@ -37,7 +78,10 @@ class ConnectionController {
     try {
       connections.push(...(await this.connectionModel.find()));
     } catch (error) {
-      console.log(error);
+      throw {
+        status: 500,
+        message: "Internal server error",
+      };
     }
 
     return connections;
@@ -46,7 +90,14 @@ class ConnectionController {
   public async getConnectionInfo(
     mongoUri: string
   ): Promise<Array<IConnectionInfo>> {
-    console.log(mongoUri);
+    //verify if mongoUri has a valid format
+    if (!mongoUri.match(/^mongodb\+srv:\/\/|^mongodb:\/\//)) {
+      throw {
+        status: 422,
+        message:
+          'Invalid mongo uri, must start with "mongodb+srv://" or "mongodb://',
+      };
+    }
 
     try {
       const dataBase = await MongoClient.connect(mongoUri);
@@ -55,9 +106,6 @@ class ConnectionController {
       const connectionInfos: Array<IConnectionInfo> = [];
 
       for (const database of dataBases.databases) {
-        console.log("Running for loop");
-        console.log(database);
-
         const collections = collectionsFormatFromDb(
           await dataBase.db(database.name).listCollections().toArray()
         );
@@ -72,10 +120,12 @@ class ConnectionController {
 
       return connectionInfos;
     } catch (error) {
-      new Error(`Connection infos error: ${error}`);
+      console.log(`getConnectionInfo error: ${error}`);
+      throw {
+        status: 500,
+        message: "Internal server error",
+      };
     }
-
-    return [];
   }
 
   public async listDocumentsFromCollection(
@@ -84,20 +134,37 @@ class ConnectionController {
     collection: string
   ): Promise<Array<object>> {
     try {
-      const mongoClient = await (
+      await this.listDocumentsRequest.validate({
+        mongoUri,
+        dataBase,
+        collection,
+      });
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        console.log(`listDocumentsFromCollection yup error: ${error.message}`);
+        throw {
+          status: 422,
+          message: error.message,
+        };
+      }
+    }
+
+    try {
+      const dataBaseConnection = await (
         await MongoClient.connect(mongoUri)
       ).db(dataBase);
-      const documents = await mongoClient
+      const documents = await dataBaseConnection
         .collection(collection)
         .find()
         .toArray();
-
       return documents;
     } catch (error) {
-      new Error(`List documents error: ${error}`);
+      console.log(`listDocumentsFromCollection error: ${error}`);
+      throw {
+        status: 500,
+        message: "Internal server error",
+      };
     }
-
-    return [];
   }
 }
 

@@ -5,7 +5,8 @@ import { IConnection } from "./connection.model";
 const connectionsSchema: Schema = new Schema<IConnection>({
   name: { type: String, required: true },
   mongoUri: { type: String, required: true },
-  isFavorite: { type: Boolean, required: true },
+  isFavorite: { type: Boolean, default: false },
+  userId: { type: String, required: true },
 });
 
 export interface ConnectionDocument extends IConnection, Document {}
